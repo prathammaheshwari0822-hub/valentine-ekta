@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ekta ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff6a88, #ff99ac);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.18);
+      padding: 30px;
+      border-radius: 22px;
+      width: 90%;
+      max-width: 360px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      z-index: 2;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      height: 120px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      transition: 0.15s ease;
+    }
+
+    #yes {
+      background: white;
+      color: #ff4d6d;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #no {
+      background: rgba(255,255,255,0.4);
+      color: white;
+      left: 10%;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body onclick="playMusic()">
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="confetti"></canvas>
+
+<div class="card">
+  <h1>Ekta ❤️</h1>
+  <p>
+    I have a very important question.<br><br>
+    Will you be my Valentine…  
+    or should I assume you enjoy rejecting perfection? 😌🌹
+  </p>
+
+  <div class="buttons">
+    <button id="yes" onclick="yesClicked()">YES 💕</button>
+    <button id="no" onmouseover="runAway()" ontouchstart="runAway()">NO 🙃</button>
+  </div>
+</div>
+
+<script>
+  function playMusic() {
+    const m = document.getElementById("music");
+    if (m.paused) m.play();
+  }
+
+  function runAway() {
+    const b = document.getElementById("no");
+    b.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    b.style.top = Math.random() * (window.innerHeight - 60) + "px";
+
+    const taunts = [
+      "Nice try 😏",
+      "Wrong answer 🙃",
+      "Be serious Ekta 😌",
+      "Just tap YES 💅",
+      "You know you want to 💖"
+    ];
+    b.innerText = taunts[Math.floor(Math.random() * taunts.length)];
+  }
+
+  function yesClicked() {
+    startConfetti();
+    alert("YAY ❤️ Officially my Valentine now. Screenshot this 😏🎉");
+  }
+
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let pieces = [];
+
+  function startConfetti() {
+    pieces = [];
+    for (let i = 0; i < 160; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * 20,
+        c: `hsl(${Math.random()*360},100%,70%)`
+      });
+    }
+    animate();
+  }
+
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      ctx.beginPath();
+      ctx.fillStyle = p.c;
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+      p.y += Math.cos(p.d) + 3;
+      p.x += Math.sin(p.d);
+    });
+    requestAnimationFrame(animate);
+  }
+</script>
+
+</body>
+</html>
